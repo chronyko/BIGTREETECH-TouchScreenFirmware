@@ -68,7 +68,7 @@
 /**
  * Text displayed at the top of the TFT in Marlin Mode.
  */
-#define MARLIN_BANNER_TEXT "LCD12864 Simulator"
+#define MARLIN_BANNER_TEXT "Chronyko Ender 5 Plus"
 
 /**
  * show banner text at the top of the TFT in Marlin Mode.
@@ -80,7 +80,7 @@
  * Options:  0: Disabled. RECOMMENDED FOR TFT24
  *           1: Enabled Marlin Fullscreen mode.
  */
-#define DEFAULT_ST7920_FULLSCREEN_MODE 0 // 0: Disabled. RECOMMENDED FOR TFT24
+#define DEFAULT_ST7920_FULLSCREEN_MODE 1 // 0: Disabled. RECOMMENDED FOR TFT24
 
 /**
  * Keep Serial always On (ONLY SUPPORTED ON TFT24 V1.1, TFT35 V3.0, AND TFT28 V3.0)
@@ -173,10 +173,10 @@
 #define FAN_CTRL_NUM 0    // set in 1~2
 
 #define PREHEAT_LABELS   {"PLA", "PETG", "ABS", "WOOD", "TPU", "NYLON"}
-#define PREHEAT_HOTEND   {200,   240,    230,   170,    220,   250}
-#define PREHEAT_BED      {60,    70,     90,    50,     50,    90}
+#define PREHEAT_HOTEND   {210,   245,    230,   170,    220,   250}
+#define PREHEAT_BED      {60,    80,     90,    50,     50,    90}
 
-#define HEAT_MAX_TEMP    {275,       275,       275,       275,       275,       275,       150,    60}   //max temperature can be set
+#define HEAT_MAX_TEMP    {300,       275,       275,       275,       275,       275,       150,    60}   //max temperature can be set
 #define HEAT_SIGN_ID     {"T0:",     "T1:",     "T2:",     "T3:",     "T4:",     "T5:",     "B:",   "C:"}
 #define HEAT_DISPLAY_ID  {"T0",      "T1",      "T2",      "T3",      "T4",      "T5",      "Bed",  "Chamber"}
 #define HEAT_CMD         {"M104 T0", "M104 T1", "M104 T2", "M104 T3", "M104 T4", "M104 T5", "M140", "M141"};
@@ -217,9 +217,9 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 235
-#define Y_MAX_POS 235
-#define Z_MAX_POS 250
+#define X_MAX_POS 350
+#define Y_MAX_POS 350
+#define Z_MAX_POS 400
 
 // Specify a pause position as { X, Y, Z_raise }
 #define NOZZLE_PAUSE_RETRACT_LENGTH 15   // (mm)
@@ -375,7 +375,7 @@
 #define POWER_LOSS_ZRAISE 10
 
 // Prevent extrusion if the temperature is below set temperature
-#define PREVENT_COLD_EXTRUSION_MINTEMP 170
+#define PREVENT_COLD_EXTRUSION_MINTEMP 180
 
 /**
  * Maximum hotend temperature of automatic shut down after printing.
