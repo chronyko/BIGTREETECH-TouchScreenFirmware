@@ -68,7 +68,7 @@
 /**
  * Text displayed at the top of the TFT in Marlin Mode.
  */
-#define MARLIN_BANNER_TEXT "Chronyko Ender 5 Plus"
+#define MARLIN_BANNER_TEXT "Chronyko-Ender-5-Plus"
 
 /**
  * show banner text at the top of the TFT in Marlin Mode.
