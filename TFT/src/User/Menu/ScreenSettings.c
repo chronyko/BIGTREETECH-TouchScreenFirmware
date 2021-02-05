@@ -27,12 +27,13 @@ void menuLanguage(void)
 
   // fill language items
   uint8_t tmp_language = infoSettings.language;
-  for(uint8_t i = 0; i < COUNT(totalItems); i++) {
-    if (i == tmp_language) {
+  for(uint8_t i = 0; i < COUNT(totalItems); i++)
+  {
+    if (i == tmp_language)
       totalItems[i].icon = ICONCHAR_CHECKED;
-    } else {
+    else
       totalItems[i].icon = ICONCHAR_UNCHECKED;
-    }
+
     infoSettings.language = i;
     totalItems[i].itemType = LIST_LABEL;
     totalItems[i].titlelabel.address = textSelect(LABEL_LANGUAGE);
@@ -59,15 +60,17 @@ void menuLanguage(void)
       break;
 
     default:
-      if(key_num < LISTITEM_PER_PAGE){
+      if(key_num < LISTITEM_PER_PAGE)
+      {
         uint16_t cur_item = infoSettings.language;
         uint16_t tmp_i = listWidgetGetCurPage() * LISTITEM_PER_PAGE + key_num;
-        if (tmp_i != cur_item) { // has changed
+        if (tmp_i < LANGUAGE_NUM && tmp_i != cur_item)  // has changed
+        {
           totalItems[cur_item].icon = ICONCHAR_UNCHECKED;
-          listWidgetRefreshItem(cur_item); // refresh unchecked status
+          listWidgetRefreshItem(cur_item);  // refresh unchecked status
           cur_item = tmp_i;
           totalItems[cur_item].icon = ICONCHAR_CHECKED;
-          listWidgetRefreshItem(cur_item); // refresh checked status
+          listWidgetRefreshItem(cur_item);  // refresh checked status
 
           infoSettings.language = cur_item;
           menuDrawTitle(textSelect(LABEL_LANGUAGE));
@@ -87,25 +90,6 @@ void menuLanguage(void)
 }
 
 #ifdef ST7920_SPI
-const LABEL lcd_colors_names[LCD_COLOR_COUNT] =
-{
-  LABEL_WHITE,
-  LABEL_BLACK,
-  LABEL_RED,
-  LABEL_GREEN,
-  LABEL_BLUE,
-  LABEL_CYAN,
-  LABEL_MAGENTA,
-  LABEL_YELLOW,
-  LABEL_ORANGE,
-  LABEL_PURPLE,
-  LABEL_LIME,
-  LABEL_BROWN,
-  LABEL_DARKBLUE,
-  LABEL_DARKGREEN,
-  LABEL_GRAY,
-  LABEL_DARKGRAY,
-};
 
 void menuSimulatorBackGroundColor(void)
 {
@@ -116,15 +100,19 @@ void menuSimulatorBackGroundColor(void)
   uint8_t cur_item = 0;
 
   // fill items
-  for(uint8_t i = 0; i < COUNT(totalItems); i++) {
-    if (infoSettings.marlin_mode_bg_color == lcd_colors[i]) {
+  for (uint8_t i = 0; i < COUNT(totalItems); i++)
+  {
+    if (infoSettings.marlin_mode_bg_color == lcd_colors[i])
+    {
       totalItems[i].icon = ICONCHAR_CHECKED;
       cur_item = i;
-    } else {
+    }
+    else
+    {
       totalItems[i].icon = ICONCHAR_UNCHECKED;
     }
     totalItems[i].itemType = LIST_LABEL;
-    totalItems[i].titlelabel = lcd_colors_names[i];
+    totalItems[i].titlelabel = lcd_color_names[i];
   }
 
   listWidgetCreate(title, totalItems, COUNT(totalItems), cur_item/ LISTITEM_PER_PAGE);
@@ -147,14 +135,16 @@ void menuSimulatorBackGroundColor(void)
       break;
 
     default:
-      if(key_num < LISTITEM_PER_PAGE){
+      if (key_num < LISTITEM_PER_PAGE)
+      {
         uint16_t tmp_i = listWidgetGetCurPage() * LISTITEM_PER_PAGE + key_num;
-        if (tmp_i != cur_item) { // has changed
+        if (tmp_i < LCD_COLOR_COUNT && tmp_i != cur_item) // has changed
+        {
           totalItems[cur_item].icon = ICONCHAR_UNCHECKED;
-          listWidgetRefreshItem(cur_item); // refresh unchecked status
+          listWidgetRefreshItem(cur_item);  // refresh unchecked status
           cur_item = tmp_i;
           totalItems[cur_item].icon = ICONCHAR_CHECKED;
-          listWidgetRefreshItem(cur_item); // refresh checked status
+          listWidgetRefreshItem(cur_item);  // refresh checked status
 
           infoSettings.marlin_mode_bg_color = lcd_colors[cur_item];
         }
@@ -180,15 +170,19 @@ void menuSimulatorFontColor(void)
   uint8_t cur_item = 0;
 
   // fill items
-  for(uint8_t i = 0; i < COUNT(totalItems); i++) {
-    if (infoSettings.marlin_mode_font_color == lcd_colors[i]) {
+  for (uint8_t i = 0; i < COUNT(totalItems); i++)
+  {
+    if (infoSettings.marlin_mode_font_color == lcd_colors[i])
+    {
       totalItems[i].icon = ICONCHAR_CHECKED;
       cur_item = i;
-    } else {
+    }
+    else
+    {
       totalItems[i].icon = ICONCHAR_UNCHECKED;
     }
     totalItems[i].itemType = LIST_LABEL;
-    totalItems[i].titlelabel = lcd_colors_names[i];
+    totalItems[i].titlelabel = lcd_color_names[i];
   }
 
   listWidgetCreate(title, totalItems, COUNT(totalItems), cur_item/ LISTITEM_PER_PAGE);
@@ -211,9 +205,11 @@ void menuSimulatorFontColor(void)
       break;
 
     default:
-      if(key_num < LISTITEM_PER_PAGE){
+      if (key_num < LISTITEM_PER_PAGE)
+      {
         uint16_t tmp_i = listWidgetGetCurPage() * LISTITEM_PER_PAGE + key_num;
-        if (tmp_i != cur_item) { // has changed
+        if (tmp_i < LCD_COLOR_COUNT && tmp_i != cur_item)  // has changed
+        {
           totalItems[cur_item].icon = ICONCHAR_UNCHECKED;
           listWidgetRefreshItem(cur_item); // refresh unchecked status
           cur_item = tmp_i;
@@ -234,7 +230,7 @@ void menuSimulatorFontColor(void)
     storePara();
   }
 }
-#endif
+#endif // ST7920_SPI
 
 #ifdef BUZZER_PIN
 
@@ -246,9 +242,9 @@ void menuSoundSettings(void)
   // icon                 ItemType      Item Title        item value text(only for custom value)
   {
     {ICONCHAR_TOGGLE_ON, LIST_TOGGLE,  LABEL_TOUCH_SOUND,  LABEL_BACKGROUND},
-    {ICONCHAR_TOGGLE_ON, LIST_TOGGLE,  LABEL_ALERT_SOUND,  LABEL_BACKGROUND},
     {ICONCHAR_TOGGLE_ON, LIST_TOGGLE,  LABEL_TOAST_SOUND,  LABEL_BACKGROUND},
-    {ICONCHAR_BACKGROUND, LIST_LABEL,  LABEL_BACKGROUND,   LABEL_BACKGROUND},
+    {ICONCHAR_TOGGLE_ON, LIST_TOGGLE,  LABEL_ALERT_SOUND,  LABEL_BACKGROUND},
+    {ICONCHAR_TOGGLE_ON, LIST_TOGGLE,  LABEL_HEATER_SOUND,  LABEL_BACKGROUND},
     {ICONCHAR_BACKGROUND, LIST_LABEL,  LABEL_BACKGROUND,   LABEL_BACKGROUND},
     {ICONCHAR_BACKGROUND, LIST_LABEL,  LABEL_BACKGROUND,   LABEL_BACKGROUND},
     {ICONCHAR_BACKGROUND, LIST_LABEL,  LABEL_BACKGROUND,   LABEL_BACKGROUND},
@@ -256,8 +252,9 @@ void menuSoundSettings(void)
   };
 
   sounditems.items[0].icon = (infoSettings.touchSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
-  sounditems.items[1].icon = (infoSettings.alertSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
   sounditems.items[2].icon = (infoSettings.toastSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
+  sounditems.items[1].icon = (infoSettings.alertSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
+  sounditems.items[3].icon = (infoSettings.heaterSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
 
   KEY_VALUES key_num = KEY_IDLE;
   SETTINGS now = infoSettings;
@@ -276,14 +273,20 @@ void menuSoundSettings(void)
       break;
 
     case KEY_ICON_1:
+      infoSettings.toastSound = (infoSettings.toastSound + 1) % 2;
+      sounditems.items[key_num].icon = (infoSettings.toastSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
+      menuDrawListItem(&sounditems.items[key_num], key_num);
+      break;
+
+    case KEY_ICON_2:
       infoSettings.alertSound = (infoSettings.alertSound + 1) % 2;
       sounditems.items[key_num].icon = (infoSettings.alertSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
       menuDrawListItem(&sounditems.items[key_num], key_num);
       break;
 
-    case KEY_ICON_2:
-      infoSettings.toastSound = (infoSettings.toastSound + 1) % 2;
-      sounditems.items[key_num].icon = (infoSettings.toastSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
+    case KEY_ICON_3:
+      infoSettings.heaterSound = (infoSettings.heaterSound + 1) % 2;
+      sounditems.items[key_num].icon = (infoSettings.heaterSound == 1) ? ICONCHAR_TOGGLE_ON : ICONCHAR_TOGGLE_OFF;
       menuDrawListItem(&sounditems.items[key_num], key_num);
       break;
 
@@ -303,7 +306,7 @@ void menuSoundSettings(void)
   }
 } //menuSoundSettings
 
-#endif
+#endif // BUZZER_PIN
 
 void menuScreenSettings(void)
 {
@@ -377,7 +380,10 @@ void menuScreenSettings(void)
         break;
 
       case KEY_ICON_2:
-        infoMenu.menu[++infoMenu.cur] = menuLanguage;
+        if (getFlashSignStatus(lang_sign))
+          infoMenu.menu[++infoMenu.cur] = menuLanguage;
+        else
+          popupReminder(DIALOG_TYPE_ALERT,(u8*)"Language not available", (u8*)"To change Language first flash a Language pack ini file.");
         break;
 
       #ifdef BUZZER_PIN

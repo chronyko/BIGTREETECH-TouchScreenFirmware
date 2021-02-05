@@ -1,29 +1,38 @@
 #include "includes.h"
 #include "More.h"
 
-void isPauseConfirm(void)
+const MENUITEMS moreItems = {
+  // title
+  LABEL_MORE,
+  // icon                         label
+  {{ICON_HEAT,                    LABEL_HEAT},
+   {ICON_FAN,                     LABEL_FAN},
+   {ICON_EXTRUDE,                 LABEL_EXTRUDE},
+   {ICON_PERCENTAGE,              LABEL_PERCENTAGE},
+   {ICON_FEATURE_SETTINGS,        LABEL_FEATURE_SETTINGS},
+   {ICON_MACHINE_SETTINGS,        LABEL_MACHINE_SETTINGS},
+#ifdef LOAD_UNLOAD_M701_M702
+   {ICON_EXTRUDE,                 LABEL_LOAD_UNLOAD_SHORT},
+#else
+   {ICON_GCODE,                   LABEL_TERMINAL},
+#endif
+   {ICON_BACK,                    LABEL_BACK},}
+};
+
+void isPauseExtrude(void)
 {
   if(setPrintPause(true,false))
     infoMenu.menu[infoMenu.cur] = menuExtrude;
 }
 
+void isPauseLoadUnload(void)
+{
+  if(setPrintPause(true,false))
+    infoMenu.menu[infoMenu.cur] = menuLoadUnload;
+}
+
 void menuMore(void)
 {
-  // 1 title, ITEM_PER_PAGE items (icon + label)
-  const MENUITEMS moreItems = {
-    // title
-    LABEL_MORE,
-    // icon                         label
-    {{ICON_HEAT,                    LABEL_HEAT},
-     {ICON_FAN,                     LABEL_FAN},
-     {ICON_EXTRUDE,                 LABEL_EXTRUDE},
-     {ICON_PERCENTAGE,              LABEL_PERCENTAGE},
-     {ICON_FEATURE_SETTINGS,        LABEL_FEATURE_SETTINGS},
-     {ICON_MACHINE_SETTINGS,        LABEL_MACHINE_SETTINGS},
-     {ICON_GCODE,                   LABEL_TERMINAL},
-     {ICON_BACK,                    LABEL_BACK},}
-  };
-
   KEY_VALUES key_num;
 
   menuDrawPage(&moreItems);
@@ -44,12 +53,13 @@ void menuMore(void)
       case KEY_ICON_2:
         if (isPrinting() && !isPause()) // need paused before extrude
         {
-          showDialog(DIALOG_TYPE_ALERT, textSelect(LABEL_WARNING),
-               textSelect(LABEL_IS_PAUSE), textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL),
-               isPauseConfirm, NULL, NULL);
+          setDialogText(LABEL_WARNING, LABEL_IS_PAUSE, LABEL_CONFIRM, LABEL_CANCEL);
+          showDialog(DIALOG_TYPE_ALERT, isPauseExtrude, NULL, NULL);
         }
         else
+        {
           infoMenu.menu[++infoMenu.cur] = menuExtrude;
+        }
         break;
 
       case KEY_ICON_3:
@@ -65,9 +75,21 @@ void menuMore(void)
         break;
 
       case KEY_ICON_6:
-        infoMenu.menu[++infoMenu.cur] = menuSendGcode;
+        #ifdef LOAD_UNLOAD_M701_M702
+          if (isPrinting() && !isPause()) // need paused before extrude
+          {
+            setDialogText(LABEL_WARNING, LABEL_IS_PAUSE, LABEL_CONFIRM, LABEL_CANCEL);
+            showDialog(DIALOG_TYPE_ALERT, isPauseLoadUnload, NULL, NULL);
+          }
+          else
+          {
+            infoMenu.menu[++infoMenu.cur] = menuLoadUnload;
+          }
+        #else
+          infoMenu.menu[++infoMenu.cur] = menuSendGcode;
+        #endif
         break;
-        
+
       case KEY_ICON_7:
         infoMenu.cur--;
         break;
